@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour {
 
     void Move(float verticalInput, float horizontalInput) {
         var movement = new Vector2(horizontalInput, verticalInput).normalized * (speed * Time.deltaTime);
-        transform.Translate(movement);
+        transform.Translate(movement, Space.World);
     }
 
     void Turn(Vector2 direction) {
