@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,19 +7,32 @@ public class PlayerController : MonoBehaviour {
     public float speed = 5;
     public float rotationSpeed = 360;
 
+    Rigidbody2D rb;
+    float _verticalInput;
+    float _horizontalInput;
+    Vector3 _mousePos;
+
+    void Start() {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     void Update() {
-        var verticalInput = Input.GetAxis("Vertical");
-        var horizontalInput = Input.GetAxis("Horizontal");
-        Move(verticalInput, horizontalInput);
+        _verticalInput = Input.GetAxisRaw("Vertical");
+        _horizontalInput = Input.GetAxisRaw("Horizontal");
         
-        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        var direction = ((Vector2) (mousePos - transform.position)).normalized;
+        _mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    void FixedUpdate() {
+        Move(_verticalInput, _horizontalInput);
+        
+        var direction = ((Vector2) (_mousePos - transform.position)).normalized;
         Turn(direction);
     }
 
     void Move(float verticalInput, float horizontalInput) {
-        var movement = new Vector2(horizontalInput, verticalInput).normalized * (speed * Time.deltaTime);
-        transform.Translate(movement, Space.World);
+        var speedVector = new Vector2(horizontalInput, verticalInput).normalized * speed;
+        rb.velocity = speedVector;
     }
 
     void Turn(Vector2 direction) {
