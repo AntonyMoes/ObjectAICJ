@@ -5,26 +5,54 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     ThrusterSystem _thrusters;
-    float _horizontalInput;
-    float _verticalInput;
-    Vector3 _mousePos;
+    InputController _inputController;
+    Vector2 _moveDirection;
+    Vector2 _lookDirection;
+    
+    Camera _mainCamera;
 
     void Start() {
         _thrusters = GetComponent<ThrusterSystem>();
+        _inputController = GetComponent<InputController>();
+        _mainCamera = Camera.main;
     }
 
     void Update() {
-        _horizontalInput = Input.GetAxisRaw("Horizontal");
-        _verticalInput = Input.GetAxisRaw("Vertical");
+        switch (_inputController.State) {
+            case InputController.EInputState.MouseKeyboard:
+                (_moveDirection, _lookDirection) = GetMouseKeyboardInputs();
+                break;
+            case InputController.EInputState.Controller:
+                (_moveDirection, _lookDirection) = GetControllerInputs();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    (Vector2, Vector2) GetMouseKeyboardInputs() {
+        var moveHorizontal = Input.GetAxisRaw("Horizontal");
+        var moveVertical = Input.GetAxisRaw("Vertical");
+        var moveDirection = new Vector2(moveHorizontal, moveVertical);
         
-        _mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var mousePos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        var lookDirection = mousePos - transform.position;
+        return (moveDirection, lookDirection);
+    }
+    
+    (Vector2, Vector2) GetControllerInputs() {
+        var moveHorizontal = Input.GetAxisRaw("MoveHorizontal");
+        var moveVertical = Input.GetAxisRaw("MoveVertical");
+        var moveDirection = new Vector2(moveHorizontal, moveVertical);
+        
+        var lookHorizontal = Input.GetAxisRaw("LookHorizontal");
+        var lookVertical = Input.GetAxisRaw("LookVertical");
+        var lookDirection = new Vector2(lookHorizontal, lookVertical);
+        return (moveDirection, lookDirection);
     }
 
     void FixedUpdate() {
-        var inputs = new Vector2(_horizontalInput, _verticalInput);
-        _thrusters.Move(inputs);
-        
-        var direction = ((Vector2) (_mousePos - transform.position)).normalized;
-        _thrusters.Turn(direction);
+        _thrusters.Move(_moveDirection);
+        _thrusters.Turn(_lookDirection);
     }
 }

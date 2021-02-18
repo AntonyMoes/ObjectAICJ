@@ -3166,6 +3166,8 @@ GameObject:
   - component: {fileID: 1388521272}
   - component: {fileID: 1388521271}
   - component: {fileID: 1388521273}
+  - component: {fileID: 1388521277}
+  - component: {fileID: 1388521276}
   - component: {fileID: 1388521274}
   - component: {fileID: 1388521275}
   m_Layer: 0
@@ -3251,10 +3253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59b78ef24dd36ba40a1782126018dafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 10
-  deceleration: 15
-  speed: 8
-  rotationSpeed: 1440
 --- !u!50 &1388521274
 Rigidbody2D:
   serializedVersion: 4
@@ -3302,6 +3300,36 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1388521276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388521270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13f5f1f5df548134297e538a93c95a76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveInput: {x: 0, y: 0}
+  directionInput: {x: 0, y: 0}
+  acceleration: 15
+  deceleration: 15
+  speed: 8
+  rotationSpeed: 1440
+--- !u!114 &1388521277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388521270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 963f6b1ec017f5c4f88c36f95fedaf24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1397767912
 PrefabInstance:
   m_ObjectHideFlags: 0

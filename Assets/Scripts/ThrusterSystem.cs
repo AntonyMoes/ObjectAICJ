@@ -15,13 +15,6 @@ public class ThrusterSystem : MonoBehaviour {
     void Start() {
         rb = GetComponent<Rigidbody2D>();
     }
-
-    // void FixedUpdate()
-    // {
-    //     Move(moveInput);
-    //     Turn(directionInput);
-    // }
-    
     public void Move(Vector2 input) {
         Vector2 accelerationVector;
         if (input.magnitude != 0) {
@@ -43,6 +36,10 @@ public class ThrusterSystem : MonoBehaviour {
     }
 
     public void Turn(Vector2 direction) {
+        if (direction == Vector2.zero) {
+            direction = rb.velocity;
+        }
+        
         var rawAngle = Vector2.SignedAngle(transform.up, direction);
         var turnDirection = Mathf.Sign(rawAngle);
         var maxRotation = rotationSpeed * Time.deltaTime;
