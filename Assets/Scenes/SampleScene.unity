@@ -3251,7 +3251,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59b78ef24dd36ba40a1782126018dafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  acceleration: 10
+  deceleration: 15
+  speed: 8
   rotationSpeed: 1440
 --- !u!50 &1388521274
 Rigidbody2D:

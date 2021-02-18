@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-    public float speed = 5;
+    public float acceleration = 10;
+    public float deceleration = 15;
+    public float speed = 8;
     public float rotationSpeed = 360;
 
     Rigidbody2D rb;
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void FixedUpdate() {
+        
         Move(_verticalInput, _horizontalInput);
         
         var direction = ((Vector2) (_mousePos - transform.position)).normalized;
@@ -31,8 +34,24 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Move(float verticalInput, float horizontalInput) {
-        var speedVector = new Vector2(horizontalInput, verticalInput).normalized * speed;
-        rb.velocity = speedVector;
+        var input = new Vector2(horizontalInput, verticalInput);
+        Vector2 accelerationVector = Vector2.zero;
+        if (input.magnitude != 0) {
+            accelerationVector = input.normalized * acceleration;
+        }
+        else {
+            accelerationVector = rb.velocity.normalized * (deceleration * -1);
+        }
+        var speedVector = rb.velocity + accelerationVector * Time.fixedDeltaTime;
+        rb.velocity = ApplySpeedConstraint(speedVector, speed);
+    }
+
+    Vector2 ApplySpeedConstraint(Vector2 speed, float maxSpeed) {
+        if (speed.magnitude <= maxSpeed) {
+            return speed;
+        }
+
+        return speed.normalized * maxSpeed;
     }
 
     void Turn(Vector2 direction) {
