@@ -10,21 +10,30 @@ public class ThrusterSystem : MonoBehaviour {
     public float speed = 8;
     public float rotationSpeed = 1440;
 
-    Rigidbody2D rb;
+    Rigidbody2D _rb;
+    Vector2 _lastLookDirection;
 
     void Start() {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
+        _lastLookDirection = _rb.transform.forward;
     }
-    public void Move(Vector2 input) {
-        Vector2 accelerationVector;
-        if (input.magnitude != 0) {
-            accelerationVector = input.normalized * acceleration;
+    public void Move(Vector2 moveDirection) {
+        Vector2 velocityVector = _rb.velocity;
+        if (moveDirection.magnitude != 0) {
+            velocityVector += moveDirection.normalized * (acceleration * Time.fixedDeltaTime);
         }
+        // slow down
         else {
-            accelerationVector = rb.velocity.normalized * (deceleration * -1);
+            var speedDecrement = deceleration * Time.fixedDeltaTime;
+            var velocityTooSmall = _rb.velocity.magnitude <= speedDecrement;
+            if (velocityTooSmall) {
+                velocityVector = Vector2.zero;
+            } else {
+                var decelerationVector = _rb.velocity.normalized * speedDecrement;
+                velocityVector -= decelerationVector;
+            }
         }
-        var speedVector = rb.velocity + accelerationVector * Time.fixedDeltaTime;
-        rb.velocity = ApplySpeedConstraint(speedVector, speed);
+        _rb.velocity = ApplySpeedConstraint(velocityVector, speed);
     }
 
     Vector2 ApplySpeedConstraint(Vector2 speed, float maxSpeed) {
@@ -35,12 +44,14 @@ public class ThrusterSystem : MonoBehaviour {
         return speed.normalized * maxSpeed;
     }
 
-    public void Turn(Vector2 direction) {
-        if (direction == Vector2.zero) {
-            direction = rb.velocity;
+    public void Turn(Vector2 lookDirection) {
+        if (lookDirection == Vector2.zero) {
+            var velocity = _rb.velocity;
+            lookDirection = velocity == Vector2.zero ? _lastLookDirection : velocity;
         }
-        
-        var rawAngle = Vector2.SignedAngle(transform.up, direction);
+        _lastLookDirection = lookDirection;
+
+        var rawAngle = Vector2.SignedAngle(transform.up, lookDirection);
         var turnDirection = Mathf.Sign(rawAngle);
         var maxRotation = rotationSpeed * Time.deltaTime;
 
