@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     ThrusterSystem _thrusters;
     AbilitySystem _abilities;
-    InputController _inputController;
+    InputDetector _inputDetector;
     Vector2 _moveDirection;
     Vector2 _lookDirection;
 
@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour {
     void Start() {
         _thrusters = GetComponent<ThrusterSystem>();
         _abilities = GetComponent<AbilitySystem>();
-        _inputController = GetComponent<InputController>();
+        _inputDetector = GetComponent<InputDetector>();
         _mainCamera = Camera.main;
 
         for (var i = 0; i < PlayerAbilityCount; i++) {
@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        GetInputs(_inputController.State);
+        GetInputs(_inputDetector.State);
 
         // fuck me for loving this shit
         // Enumerable.Range(0, PlayerAbilityCount)
@@ -41,17 +41,17 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void GetInputs(InputController.EInputState inputState) {
+    void GetInputs(InputDetector.EInputState inputState) {
         var prefix = "";
-        if (inputState == InputController.EInputState.Controller) {
-            prefix = InputController.ControllerPrefix;
+        if (inputState == InputDetector.EInputState.Controller) {
+            prefix = InputDetector.ControllerPrefix;
         }
         
         var moveHorizontal = Input.GetAxisRaw(prefix + "MoveHorizontal");
         var moveVertical = Input.GetAxisRaw(prefix + "MoveVertical");
         _moveDirection = new Vector2(moveHorizontal, moveVertical);
 
-        if (inputState == InputController.EInputState.MouseKeyboard) {
+        if (inputState == InputDetector.EInputState.MouseKeyboard) {
             var mousePos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
             _lookDirection = mousePos - transform.position;
         }
