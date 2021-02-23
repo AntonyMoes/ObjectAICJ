@@ -10,6 +10,7 @@ public class AbilitySystem : MonoBehaviour {
     void Start() {
         _projectileSpawnPoint = transform.GetChild(0).GetComponent<Transform>();
         _abilities.Add(gameObject.AddComponent<AbilityRapid>());
+        _abilities.Add(gameObject.AddComponent<AbilityJet>());
     }
     
     public void ActivateAbility(int number) {

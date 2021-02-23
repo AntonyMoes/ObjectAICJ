@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
     Vector2 _moveDirection;
     Vector2 _lookDirection;
 
-    const int PlayerAbilityCount = 1;
+    const int PlayerAbilityCount = 2;
     List<bool> _abilityUsages = new List<bool>(PlayerAbilityCount);
 
     Camera _mainCamera;
