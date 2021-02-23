@@ -9,6 +9,7 @@
      };
      EInputState _state = EInputState.MouseKeyboard;
      public EInputState State => _state;
+     public const string ControllerPrefix = "Controller";
 
      void OnGUI() {
          switch(_state) {
@@ -65,10 +66,10 @@
              return true;
          }
          
-         if(Input.GetAxis("MoveHorizontal") != 0.0f ||
-            Input.GetAxis("MoveVertical") != 0.0f ||
-            Input.GetAxis("LookHorizontal") != 0.0f ||
-            Input.GetAxis("LookVertical") != 0.0f) {
+         if(Input.GetAxis("ControllerMoveHorizontal") != 0.0f ||
+            Input.GetAxis("ControllerMoveVertical") != 0.0f ||
+            Input.GetAxis("ControllerLookHorizontal") != 0.0f ||
+            Input.GetAxis("ControllerLookVertical") != 0.0f) {
              return true;
          }
          
