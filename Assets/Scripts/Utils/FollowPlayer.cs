@@ -11,6 +11,10 @@ public class FollowPlayer : MonoBehaviour {
     // Vector3 velocity = Vector3.zero;
 
     void Update() {
+        if (!target) {
+            return;
+        }
+        
         var targetPos = target.position;
         transform.position = new Vector3(targetPos.x, targetPos.y, zOffset);
         
