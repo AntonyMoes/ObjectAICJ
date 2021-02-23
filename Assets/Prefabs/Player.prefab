@@ -137,6 +137,11 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4026328483587780175, guid: 0ff9fb810cee6284bbb75de582b70245,
+        type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ff9fb810cee6284bbb75de582b70245, type: 3}
 --- !u!1 &4790793659983077864 stripped
